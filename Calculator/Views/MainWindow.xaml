@@ -1,0 +1,86 @@
+﻿<Window x:Class="SimpleCalculator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleCalculator"
+        xmlns:vm="clr-namespace:SimpleCalculator.ViewModels"
+        mc:Ignorable="d"
+        Title="Калькулятор" Height="500" Width="500" MinWidth="500" MinHeight="420" Icon="/Views/calculator.png">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <Style x:Key="Buttons" TargetType="{x:Type Button}">
+            <Setter Property="FontSize" Value="30" />
+        </Style>
+        <Style x:Key="Digits" TargetType="{x:Type Button}" BasedOn="{StaticResource Buttons}">
+            <Setter Property="Control.Background" Value="White"/>
+            <Setter Property="Command" Value="{Binding Path=InputDigitCommand}"/>
+            <Setter Property="CommandParameter" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
+        </Style>
+        <Style x:Key="DigitsAdds" TargetType="{x:Type Button}" BasedOn="{StaticResource Buttons}">
+            <Setter Property="Control.Background" Value="White"/>
+            <Setter Property="Foreground" Value="#5A7BB5" />
+        </Style>
+        <Style x:Key="Operators" TargetType="{x:Type Button}" BasedOn="{StaticResource Buttons}">
+            <Setter Property="Control.Background" Value="#CCDCF2"/>
+            <Setter Property="Command" Value="{Binding Path=SetOperatorCommand}"/>
+            <Setter Property="CommandParameter" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
+        </Style>
+        <Style x:Key="Func" TargetType="{x:Type Button}" BasedOn="{StaticResource Buttons}">
+            <Setter Property="Control.Background" Value="#CCDCF2"/>
+            <Setter Property="Foreground" Value="#5A7BB5" />
+        </Style>
+        <Style x:Key="Enter" TargetType="{x:Type Button}" BasedOn="{StaticResource Buttons}">
+            <Setter Property="Control.Background" Value="#5A7BB5"/>
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="Background" Value="#70DEF1" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+    </Window.Resources>
+
+    <Grid VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="75"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBox Grid.Row="0" Text="{Binding Path=Formula}" MinHeight="50" MaxHeight="50" FontSize="30"/>
+        <TextBox Grid.Row="1" Text="{Binding Path=Input}" MinHeight="75" MaxHeight="75" FontSize="50"/>
+
+        <UniformGrid Grid.Row="2" Columns="4" Rows="6">
+            <Button Content="%" Style="{StaticResource Operators}" Command="{Binding Path=PercentsCommand}"/>
+            <Button Content="CE" Style="{StaticResource Func}" Command="{Binding Path=ClearEntryCommand}"/>
+            <Button Content="C" Style="{StaticResource Func}" Command="{Binding Path=ClearCommand}"/>
+            <Button Content="←" Style="{StaticResource Func}" Command="{Binding Path=BackspaceCommand}"/>
+            <Button Content="1/x" Style="{StaticResource Operators}" Command="{Binding Path=OneDivisionCalculateCommand}"/>
+            <Button Content="x²" Style="{StaticResource Operators}" Command="{Binding Path=OneOperandCalculateCommand}"/>
+            <Button Content="√x" Style="{StaticResource Operators}" Command="{Binding Path=SqrtCalculateCommand}"/>
+            <Button Content="÷" Style="{StaticResource Operators}"/>
+            <Button Content="7" Style="{StaticResource Digits}"/>
+            <Button Content="8" Style="{StaticResource Digits}"/>
+            <Button Content="9" Style="{StaticResource Digits}"/>
+            <Button Content="×" Style="{StaticResource Operators}"/>
+            <Button Content="4" Style="{StaticResource Digits}"/>
+            <Button Content="5" Style="{StaticResource Digits}"/>
+            <Button Content="6" Style="{StaticResource Digits}"/>
+            <Button Content="–" Style="{StaticResource Operators}"/>
+            <Button Content="1" Style="{StaticResource Digits}"/>
+            <Button Content="2" Style="{StaticResource Digits}"/>
+            <Button Content="3" Style="{StaticResource Digits}"/>
+            <Button Content="+" Style="{StaticResource Operators}"/>
+            <Button Content="+/–" Style="{StaticResource DigitsAdds}" Command="{Binding Path=InverseSignCommand}"/>
+            <Button Content="0" Style="{StaticResource Digits}"/>
+            <Button Content="," Style="{StaticResource DigitsAdds}" Command="{Binding Path=AddSeparatorCommand}"/>
+            <Button Content="=" Style="{StaticResource Enter}" Command="{Binding Path=EnterCommand}"/>
+        </UniformGrid>
+    </Grid>
+</Window>
